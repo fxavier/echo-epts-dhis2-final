@@ -179,13 +179,22 @@ export default function MappingPage() {
 				title: 'Processing complete',
 				description: 'All data mapped. Your updated file is now downloading.',
 			});
-		} catch (error: any) {
-			console.error('Error processing Excel file:', error);
-			toast({
-				variant: 'destructive',
-				title: 'Processing error',
-				description: error?.message || String(error),
-			});
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('Error processing Excel file:', error.message);
+				toast({
+					variant: 'destructive',
+					title: 'Processing error',
+					description: error.message,
+				});
+			} else {
+				console.error('Error processing Excel file:', error);
+				toast({
+					variant: 'destructive',
+					title: 'Processing error',
+					description: String(error),
+				});
+			}
 		}
 	};
 
